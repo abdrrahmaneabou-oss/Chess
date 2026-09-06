@@ -110,9 +110,6 @@ public final class ShapeCanvasView extends View {
             case PAWN:
                 drawPawn(canvas, left, right, bottom, len);
                 break;
-            case KING:
-                drawKing(canvas, cx, left, top, right, len);
-                break;
         }
     }
 
@@ -135,17 +132,25 @@ public final class ShapeCanvasView extends View {
         float straight = len * 0.62f;
         float turn = len * 0.38f;
 
-        c.drawLine(cx, t, cx, t - straight, paint);
-        c.drawLine(cx, t - straight, cx + turn, t - straight, paint);
+        float topY = t - straight;
+        c.drawLine(cx, t, cx, topY, paint);
+        c.drawLine(cx, topY, cx - turn, topY, paint);
+        c.drawLine(cx, topY, cx + turn, topY, paint);
 
-        c.drawLine(r, cy, r + straight, cy, paint);
-        c.drawLine(r + straight, cy, r + straight, cy + turn, paint);
+        float rightX = r + straight;
+        c.drawLine(r, cy, rightX, cy, paint);
+        c.drawLine(rightX, cy, rightX, cy - turn, paint);
+        c.drawLine(rightX, cy, rightX, cy + turn, paint);
 
-        c.drawLine(cx, b, cx, b + straight, paint);
-        c.drawLine(cx, b + straight, cx - turn, b + straight, paint);
+        float bottomY = b + straight;
+        c.drawLine(cx, b, cx, bottomY, paint);
+        c.drawLine(cx, bottomY, cx - turn, bottomY, paint);
+        c.drawLine(cx, bottomY, cx + turn, bottomY, paint);
 
-        c.drawLine(l, cy, l - straight, cy, paint);
-        c.drawLine(l - straight, cy, l - straight, cy - turn, paint);
+        float leftX = l - straight;
+        c.drawLine(l, cy, leftX, cy, paint);
+        c.drawLine(leftX, cy, leftX, cy - turn, paint);
+        c.drawLine(leftX, cy, leftX, cy + turn, paint);
     }
 
     private void drawPawn(Canvas c, float l, float r, float b, float len) {
@@ -154,21 +159,9 @@ public final class ShapeCanvasView extends View {
         c.drawLine(r, b, r + d, b + d, paint);
     }
 
-    private void drawKing(Canvas c, float cx, float l, float t, float r, float len) {
-        float stemEnd = t - len;
-        c.drawLine(cx, t, cx, stemEnd, paint);
-        float cross = Math.max(dp(10), len * 0.30f);
-        c.drawLine(cx - cross, stemEnd + len * 0.18f, cx + cross, stemEnd + len * 0.18f, paint);
-
-        float side = len * 0.72f;
-        float d = side * 0.70710678f;
-        c.drawLine(l, t, l - d, t - d, paint);
-        c.drawLine(r, t, r + d, t - d, paint);
-    }
-
     private float lengthPx(int value) {
         float normalized = (ShapeModel.clampLength(value) - 1f) / 99f;
-        return dp(14f + normalized * 210f);
+        return dp(14f + normalized * 700f);
     }
 
     private ShapeModel hitSquare(float x, float y) {
