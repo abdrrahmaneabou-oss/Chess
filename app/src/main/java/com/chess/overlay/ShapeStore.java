@@ -52,7 +52,10 @@ public final class ShapeStore {
             JSONArray array = new JSONArray(raw);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject o = array.getJSONObject(i);
-                ShapeType type = ShapeType.fromId(o.optInt("type", 1));
+                int typeId = o.optInt("type", 1);
+                if (typeId < 1 || typeId > 5) continue;
+
+                ShapeType type = ShapeType.fromId(typeId);
                 result.add(new ShapeModel(
                         o.optString("id"),
                         type,
